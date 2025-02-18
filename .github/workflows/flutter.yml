@@ -1,40 +1,26 @@
-name: Build APK
+name: Build and Upload APK
 
-on:
-  push:
-    branches:
-      - main  # Change to your branch if needed
+on: push
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Set up Flutter
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          flutter-version: '3.7.0'
+          distribution: 'adopt'
+          java-version: '11'
 
-      # Install dependencies
-      - name: Install dependencies
-        run: flutter pub get
-
-      # Clean the project
-      - name: Clean Flutter project
-        run: flutter clean
-
-      # Build APK
       - name: Build APK
-        run: flutter build apk --release
+        run: ./gradlew assembleRelease
 
-      # Upload APK as an artifact using actions/upload-artifact@v3
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: my-apk
+          path: app/build/outputs/apk/release/app-release.apk
