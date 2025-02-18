@@ -1,4 +1,4 @@
-name: Build and Upload APK
+name: Build and Upload Flutter APK
 
 on: push
 
@@ -10,17 +10,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
-          distribution: 'adopt'
-          java-version: '11'
+          flutter-version: '3.29.0'  # Update to the Flutter version you're using
+
+      - name: Install dependencies
+        run: flutter pub get
 
       - name: Build APK
-        run: ./gradlew assembleRelease
+        run: flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: my-apk
-          path: app/build/outputs/apk/release/app-release.apk
+          name: my-flutter-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
