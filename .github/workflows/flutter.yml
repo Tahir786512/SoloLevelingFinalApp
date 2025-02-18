@@ -32,9 +32,9 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      # Upload APK as an artifact (v3.2.0)
+      # Upload APK as an artifact using the new actions/artifact
       - name: Upload APK
-        uses: actions/upload-artifact@v3.2.0
+        uses: actions/artifact@v4.0.0
         with:
           name: app-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
